@@ -1,0 +1,9 @@
+body {
+    padding: 2rem;
+}
+
+.response {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+}

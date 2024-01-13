@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block content %}
+
+<form action="/" method="post" class="form">
+    <label for="user-agent">User Agent:</label>
+    <input type="text" id="data" name="data" value="Hello" />
+
+    <input type="submit" value="Submit" />
+</form>
+
+<div class="response">{{ message }}</div>
+
+{% endblock %}
