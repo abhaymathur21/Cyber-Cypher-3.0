@@ -7,6 +7,10 @@
     <input type="submit" value="Submit" />
 </form>
 
-<div class="response">{{ message }}</div>
+<ul>
+    {% for item in statuses %}
+    <li>{{ item.status }} | {{ item.order }} | {{ item.in_store }}</li>
+    {% endfor %}
+</ul>
 
 {% endblock %}

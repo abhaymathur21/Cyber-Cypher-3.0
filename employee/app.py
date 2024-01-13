@@ -6,12 +6,11 @@ import json
 from agents.manager import manager
 
 
-from models.models import StatusQuery
+from models.models import GetStatus
 
 app = Flask(__name__)
 CORS(app)
 
-# destination = "agent1q22hcm833jf2atptpjmepvpaftwzg0kvh4ztp9xlulf6w40utvrqjcnr6hu"
 destination = manager.address
 
 
@@ -23,10 +22,12 @@ def index():
 @app.post("/")
 async def form():
     data = request.form["data"]
-    res = await query(destination=destination, message=StatusQuery())
-    res_data = json.loads(res.decode_payload()) if res else {"message": "No response"}
+    res = await query(destination=destination, message=GetStatus())
+    print(res.decode_payload())
+    statuses = json.loads(res.decode_payload())["statuses"]
+    print(statuses)
 
-    return render_template("index.html", message=f"Recieved: {res_data['message']}")
+    return render_template("index.html", statuses=statuses)
 
 
 if __name__ == "__main__":
