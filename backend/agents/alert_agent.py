@@ -4,7 +4,8 @@ from uagents.setup import fund_agent_if_low
 import requests
 
 class Message(Model):
-    value: str
+    product: str
+    quantity: str
 
 alert_agent = Agent(
     name="alert_agent",
@@ -17,7 +18,7 @@ print(alert_agent.address)
 
 @alert_agent.on_message(model=Message)
 async def handle_message(ctx:Context,sender:str, msg: Message):
-    ctx.logger.info(f"{msg.value} has low stock")
+    ctx.logger.info(f"{msg.product} has low stock")
 
 if __name__ == "__main__":
     fund_agent_if_low(alert_agent.wallet.address())

@@ -1,22 +1,28 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from uagents.query import query
 from uagents import Model
 from flask_cors import CORS
 
 class Message(Model):
-    value: str
+    product: str
+    quantity: str
+    
 
 app = Flask(__name__)
 CORS(app)
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html')
 
 @app.route('/search', methods=['GET', 'POST'])
 async def frontend_input():
     if request.method== 'POST':
         data = request.json
-        input_string = data.get('search')
-        print(input_string)
-        await query(destination='agent1qgmvuf8wuv96ypmsptary360n8qghm80yw0tv39qqk4d5nepgudxzskzqqm',message=Message(value=input_string))  
-        processed_result = f"You entered: {input_string}"
+        product = data.get('product')
+        quantity = data.get('quantity')
+        await query(destination='agent1qgmvuf8wuv96ypmsptary360n8qghm80yw0tv39qqk4d5nepgudxzskzqqm',message=Message(product=product,quantity=quantity)) # goes to input agent
+        processed_result = f"You have successfully bought: {product} and the quantity is {quantity}"
         return processed_result
     return processed_result     
         
