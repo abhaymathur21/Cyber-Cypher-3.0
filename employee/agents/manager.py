@@ -12,15 +12,11 @@ manager = Agent(
 
 print("Manager: ", manager.address)
 
-addresses = [
-    "agent1qfhgl8s04lkaf44xgc5ch2jlhz9kpcd7wppfedjvfayqwhde2jh8g52zy8d",
-    "agent1q26w5lt5rn6kw8kdut9c4pvf5cxuam3py5dk72s9hasfwkftuc9277c8pda",
-]
 
-
-@manager.on_interval(period=5)
-async def query_handler(ctx: Context):
-    print("Status requested")
+@manager.on_interval(period=10)
+async def update_status(ctx: Context):
+    print("-" * 20)
+    ctx.logger.info("Status requested", delivery_protocol.digest)
     await ctx.experimental_broadcast(
         destination_protocol=delivery_protocol.digest, message=StatusQuery()
     )
@@ -28,14 +24,14 @@ async def query_handler(ctx: Context):
 
 @manager.on_message(model=Status)
 async def status_handler(ctx: Context, sender: str, status: Status):
-    print("Status received", sender, status)
+    ctx.logger.info("Status received", sender, status)
     ctx.storage.set(sender, status.dict())
 
 
-@manager.on_message(model=GetStatus, replies=Statuses)
+@manager.on_query(model=GetStatus, replies=Statuses)
 async def get_status_handler(ctx: Context, sender: str, _: GetStatus):
     statuses = []
-    for address in addresses:
+    for address in ctx.storage._data.keys():
         status = ctx.storage.get(address)
         statuses.append(Status(**status))
 
