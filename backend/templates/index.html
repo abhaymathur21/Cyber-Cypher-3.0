@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask App Frontend</title>
+</head>
+<body>
+    <h1>Flask App Frontend</h1>
+    
+    <label for="productInput">Enter product names (separated by commas):</label>
+    <input type="text" id="productInput" name="productInput">
+    <br>
+    <br>
+    <label for="searchInput">Enter product quantities (separated by commas):</label>
+    <input type="text" id="quantityInput" name="quantityInput">
+    <br>
+    <br>
+    <button id="buyButton">Buy</button>
+
+    <div id="resultContainer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('buyButton').addEventListener('click', function() {
+                var inputProduct = document.getElementById('productInput').value;
+                var inputQuantity = document.getElementById('quantityInput').value;
+
+                fetch('http://localhost:5000/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ "product": inputProduct, "quantity": inputQuantity }),
+                })
+                .then(response => response.text())
+                .then(result => {
+                    document.getElementById('resultContainer').innerText = result;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
