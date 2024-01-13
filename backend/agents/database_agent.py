@@ -3,9 +3,12 @@ from uagents.query import query
 from uagents.setup import fund_agent_if_low
 import requests
 import json
+import csv
 
 json_file_path = r'C:\Users\a21ma\OneDrive\Desktop\Cyber Cypher 3.0\data\products.json'
+csv_file_path = r'C:\Users\a21ma\OneDrive\Desktop\Cyber Cypher 3.0\data\products.csv'
 
+# Reading the data from the json file:
 with open(json_file_path, 'r') as json_file:
     database_response = json.load(json_file)
 # print(database_response[0])
@@ -44,22 +47,45 @@ async def handle_message(ctx:Context,sender:str, msg: Message):
             
             if data_name_lower == input_name_lower:
                 print(f'{input_quantity} of {input_names[i]}(id:{data_id}) was bought')
+                
                 if Quantity <35:
                     # print('Low stock before buying')
-                    await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(value=data_name_lower))
+                    await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(value=data_name_lower)) #goes to alert agent
+                    
                 newQuantity = Quantity - input_quantity
                 data['Quantity'] = newQuantity
                 
+                # Updating the json file:
                 with open(json_file_path, 'w') as json_file:
                     json.dump(database_response, json_file, indent=2)
+                    
+                # Reading the csv file:
+                with open(csv_file_path, 'r') as csv_file:
+                    csv_reader = csv.DictReader(csv_file)
+                    csv_data = list(csv_reader)
+                    
+                # Updating csv values
+                for csv_data_row in csv_data:
+                    if int(csv_data_row['id']) == data_id:
+                        csv_data_row['Quantity'] = newQuantity
+                
+                with open(csv_file_path, 'w', newline='') as csv_file:
+                    fieldnames = ["id", "Name", "Brand", "Category", "SubCategory", "Price", "Quantity"]
+                    csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+                    # Write the header
+                    csv_writer.writeheader()
+
+                    # Write the updated data
+                    csv_writer.writerows(csv_data)
                 
                 print("New Quantity: ",data['Quantity']) 
                 if data['Quantity'] <5:
                     # print('Low stock after buying')
-                    await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(value=data_name_lower))
-                    
-                    
-            
+                    await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(value=data_name_lower)) # goes to alert agent
+
+
+
 
 if __name__ == "__main__":
     fund_agent_if_low(database_agent.wallet.address())

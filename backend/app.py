@@ -21,7 +21,7 @@ async def frontend_input():
         data = request.json
         product = data.get('product')
         quantity = data.get('quantity')
-        await query(destination='agent1qgmvuf8wuv96ypmsptary360n8qghm80yw0tv39qqk4d5nepgudxzskzqqm',message=Message(product=product,quantity=quantity))  
+        await query(destination='agent1qgmvuf8wuv96ypmsptary360n8qghm80yw0tv39qqk4d5nepgudxzskzqqm',message=Message(product=product,quantity=quantity)) # goes to input agent
         processed_result = f"You have successfully bought: {product} and the quantity is {quantity}"
         return processed_result
     return processed_result     

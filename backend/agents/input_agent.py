@@ -20,7 +20,7 @@ async def handle_query(ctx:Context,sender:str, msg: Message):
     product = msg.product
     quantity = msg.quantity
     print(product,quantity)
-    await ctx.send("agent1qde9dwqkl6dj0glmj8kfhfg8q99q6pcw3vgfpzpzjewrjeg70p3kjwms6y6", Message(product=product,quantity=quantity))
+    await ctx.send("agent1qde9dwqkl6dj0glmj8kfhfg8q99q6pcw3vgfpzpzjewrjeg70p3kjwms6y6", Message(product=product,quantity=quantity)) # goes to database agent
     
 if __name__ == "__main__":
     fund_agent_if_low(input_agent.wallet.address())
