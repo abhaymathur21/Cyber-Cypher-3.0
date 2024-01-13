@@ -48,18 +48,10 @@ async def handle_message(ctx:Context,sender:str, msg: Message):
                     # print('Low stock before buying')
                     await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(value=data_name_lower))
                 newQuantity = Quantity - input_quantity
-                data = {
-                "Quantity": newQuantity
-                }  
-
-                headers = {
-                    "Content-Type": "application/json"
-                }
+                data['Quantity'] = newQuantity
                 
-                # response = requests.put(database_api_url+'/{data_id}', json=data, headers=headers)
-                # print(response.status_code)
-                
-                
+                with open(json_file_path, 'w') as json_file:
+                    json.dump(database_response, json_file, indent=2)
                 
                 print("New Quantity: ",data['Quantity']) 
                 if data['Quantity'] <5:
