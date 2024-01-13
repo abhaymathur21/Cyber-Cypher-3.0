@@ -7,10 +7,25 @@
     <input type="submit" value="Submit" />
 </form>
 
-<ul>
-    {% for item in statuses %}
-    <li>{{ item.status }} | {{ item.order }} | {{ item.in_store }}</li>
-    {% endfor %}
-</ul>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Order</th>
+            <th>In Store</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in statuses %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.status }}</td>
+            <td>{{ item.order }}</td>
+            <td>{{ item.in_store }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

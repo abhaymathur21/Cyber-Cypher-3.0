@@ -6,6 +6,7 @@ class StatusQuery(Model):
 
 
 class Status(Model):
+    name: str
     status: str
     in_store: bool
     order: str
