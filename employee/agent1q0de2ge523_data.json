@@ -7,6 +7,14 @@
             "status": "DELIVERED",
             "id": 0,
             "delivery_agent": "delivery agent C"
+        },
+        {
+            "product_id": 1,
+            "quantity": 1,
+            "customer_id": "4",
+            "status": "DELIVERED",
+            "id": 1,
+            "delivery_agent": "delivery agent B"
         }
     ],
     "statuses": [
@@ -32,6 +40,6 @@
             "order": ""
         }
     ],
-    "order_id": 1,
-    "last_assigned": "agent1qtru02y2cttmm62wtg038e4yqx7zucxlvu5dggq70zw6f4yp9f3g6nkv5c4"
+    "order_id": 2,
+    "last_assigned": "agent1qgkfqeqz87wlwkwnhk6nkueqyzp89y0nvm68rxhnjhzz9fq8v7uvw6r84mx"
 }
