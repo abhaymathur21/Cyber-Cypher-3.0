@@ -25,19 +25,16 @@ class GetStatus(Model):
     pass
 
 
-class Product(Model):
-    id: int
-    quatity: int
-
-
 class CreateOrder(Model):
-    products: list[Product]
+    product_id: int
+    quatity: int
     customer_id: str
 
 
 class Order(Model):
     id: int
-    products: str
+    product_id: int
+    quatity: int
     customer_id: str
     status: str
     delivery_agent: str

@@ -2,10 +2,39 @@
 <h1>Orders</h1>
 
 <h2>New Order</h2>
-<form action="/orders" method="POST">
-    <label for="customer_id">Customer ID</label>
-    <input type="text" name="customer_id" id="customer_id" />
-    <label for="delivery_agent">Delivery Agent</label>
+<form action="/create-order" method="POST" class="order-form">
+    <label for="product">
+        Product
+        <select name="product" id="product">
+            {% for item in products %}
+            <option value="{{ item.id }}">
+                {{ item.Name }} - {{ item.Size }} - ₹{{ item.Price | int }}
+            </option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label for="quantity">
+        Quantity
+        <input type="number" name="quantity" id="quantity" value="1" min="1" />
+    </label>
+
+    <label for="customer_id">
+        Customer ID
+        <input
+            type="text"
+            name="customer_id"
+            id="customer_id"
+            list="customer_ids" />
+        <datalist id="customer_ids">
+            <option value="1"></option>
+            <option value="2"></option>
+            <option value="3"></option>
+            <option value="4"></option>
+            <option value="5"></option>
+        </datalist>
+    </label>
+
     <input type="submit" value="Submit" />
 </form>
 
@@ -28,7 +57,7 @@
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.customer_id }}</td>
-            <td>{{ item.delivery_agent }}</td>
+            <td>{{ item.delivery_agent | upper }}</td>
             <td class="{{ item.status | lower }} status">{{ item.status }}</td>
         </tr>
         {% endfor %}

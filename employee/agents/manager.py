@@ -35,6 +35,9 @@ async def startup_handler(ctx: Context):
     if not ctx.storage.has("order_id"):
         ctx.storage.set("order_id", 0)
 
+    if not ctx.storage.has("last_assigned"):
+        ctx.storage.set("last_assigned", "")
+
     ctx.logger.info("Manager started")
 
 
@@ -67,7 +70,13 @@ async def get_status_handler(ctx: Context, sender: str, _: GetStatus):
 async def create_order_handler(ctx: Context, sender: str, orderQuery: CreateOrder):
     next_id = ctx.storage.get("order_id")
 
-    order = {**orderQuery.dict(), "status": "PENDING", "id": next_id}
+    order = {
+        **orderQuery.dict(),
+        "status": "PENDING",
+        "id": next_id,
+        "delivery_agent": "",
+    }
+
     ctx.storage.set("order_id", next_id + 1)
 
     orders = ctx.storage.get("orders")
@@ -82,10 +91,22 @@ async def assign_order(ctx: Context):
     orders = ctx.storage.get("orders")
     statuses = ctx.storage.get("statuses")
 
+    last_assigned = ctx.storage.get("last_assigned")
+
     for status in statuses:
-        if status["status"] == "IDLE":
+        if (
+            status["status"] == "IDLE"
+            and status["in_store"]
+            and status["address"] != last_assigned
+        ):
             if len(orders) > 0:
-                order = filter(lambda order: order["status"] == "PENDING", orders)[0]
+                pending_orders = list(
+                    filter(lambda order: order["status"] == "PENDING", orders)
+                )
+                if len(pending_orders) == 0:
+                    break
+
+                order = pending_orders[0]
 
                 for o in orders:
                     if o["id"] == order["id"]:
@@ -94,6 +115,8 @@ async def assign_order(ctx: Context):
                         break
 
                 ctx.storage.set("orders", orders)
+
+                ctx.storage.set("last_assigned", status["address"])
 
                 await ctx.send(
                     status["address"], OrderID(id=order["id"], status="ASSIGNED")
@@ -110,6 +133,15 @@ async def order_id_handler(ctx: Context, sender: str, order_id: OrderID):
             order["status"] = order_id.status
             ctx.storage.set("orders", orders)
             break
+
+    if order_id.status == "DELIVERING":
+        await ctx.send(
+            sender,
+            OrderID(
+                id=order_id.id,
+                status="DELIVERING",
+            ),
+        )
 
 
 @manager.on_query(model=GetOrders, replies=Orders)

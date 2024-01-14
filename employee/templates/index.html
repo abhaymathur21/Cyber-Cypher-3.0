@@ -1,5 +1,11 @@
 {% extends "base.html" %} {% block content %}
-<h1>Dashboard</h1>
+<div class="heading">
+    <h1>Dashboard</h1>
+
+    <form action="/">
+        <input type="submit" value="Refresh" class="refresh" />
+    </form>
+</div>
 
 <h2>Delivery Agents</h2>
 <table>
@@ -46,7 +52,7 @@
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.customer_id }}</td>
-            <td>{{ item.delivery_agent }}</td>
+            <td>{{ item.delivery_agent | upper }}</td>
             <td class="{{ item.status | lower }} status">{{ item.status }}</td>
         </tr>
         {% endfor %}
