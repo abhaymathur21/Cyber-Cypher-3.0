@@ -13,7 +13,7 @@ body {
     display: grid;
     grid-template-columns: 15rem 1fr;
     min-height: 100vh;
-    gap: 4rem;
+    gap: 2rem;
     margin: 0;
 }
 
@@ -184,4 +184,9 @@ select {
     border-radius: 0.25rem;
     font-size: 1.5rem;
     font-weight: bold;
+}
+
+.inventory td,
+.inventory th {
+    padding: 0.5rem 1rem;
 }

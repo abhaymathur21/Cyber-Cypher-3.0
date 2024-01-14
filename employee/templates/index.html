@@ -7,6 +7,15 @@
     </form>
 </div>
 
+<img
+    src="{{ url_for('static', filename='data-vis/cat-quant.png') }}"
+    alt="Qunatity by Category"
+    width="400" />
+<img
+    src="{{ url_for('static', filename='data-vis/cat-reven.png') }}"
+    alt="Revenue by Category"
+    width="400" />
+
 <h2>Delivery Agents</h2>
 <table>
     <thead>
@@ -57,6 +66,5 @@
         </tr>
         {% endfor %}
     </tbody>
-
-    {% endblock %}
 </table>
+{% endblock %}

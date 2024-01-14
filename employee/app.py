@@ -52,5 +52,13 @@ async def create_order():
     return redirect("/")
 
 
+@app.get("/inventory")
+async def inventory():
+    with open("../data/products.json", "r") as f:
+        products = json.load(f)
+
+    return render_template("inventory.html", products=products)
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

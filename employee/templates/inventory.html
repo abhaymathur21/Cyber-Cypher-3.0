@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% block content %}
+<div class="heading">
+    <h1>Inventory</h1>
+
+    <form action="/">
+        <input type="submit" value="Refresh" class="refresh" />
+    </form>
+</div>
+
+<h2>Products</h2>
+
+<table class="inventory">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Category</th>
+            <th>SubCategory</th>
+            <th>Price</th>
+            <th>Size</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in products %}
+        <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.Name }}</td>
+            <td>{{ row.Brand }}</td>
+            <td>{{ row.Category }}</td>
+            <td>{{ row.SubCategory }}</td>
+            <td>{{ row.Price }}</td>
+            <td>{{ row.Size }}</td>
+            <td>{{ row.Quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
