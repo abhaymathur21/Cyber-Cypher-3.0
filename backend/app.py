@@ -62,6 +62,21 @@ def products():
         
         # print(product, quantity)
         return jsonify({"message": "Data updated successfully"})
+    
+@app.route('/database', methods=['GET','POST'])
+def database():
+    if request.method == 'GET':
+        return render_template('database.html',data=products_data)
+    
+    if request.method == 'POST':
+        data = request.get_json()
+        
+        # Updating the json file:
+        with open(json_file_path, 'w') as json_file:
+            json.dump(data, json_file, indent=2)
+        
+        # print(product, quantity)
+        return jsonify({"message": "Data updated successfully"})
         
 if __name__ == '__main__':
     app.run(debug=True)

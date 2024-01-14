@@ -36,7 +36,7 @@ async def handle_message(ctx:Context,sender:str, msg: Message):
     input_names = [name.split(' -')[0] for name in input_names_with_size]
     input_sizes = [name.split('- ')[1] for name in input_names_with_size]
     input_quantities = msg.quantity.split(', ')
-    print(input_names,input_sizes,input_quantities)
+    # print(input_names,input_sizes,input_quantities)
     
     for data in database_response:
         # print(data)
@@ -56,15 +56,14 @@ async def handle_message(ctx:Context,sender:str, msg: Message):
             if data_name_lower == input_name_lower and data_size == input_size:
                 print(f'{input_quantity} of {input_names[i]}(id:{data_id}) was bought')
                 
-                if data_quantity <35:
+                if data_quantity <120:
                     # print('Low stock before buying')
-                    await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(value=data_name_lower)) #goes to alert agent
+                    await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(product=input_names_with_size[i],quantity=data['Quantity'])) #goes to alert agent
                     
                 newQuantity = data_quantity - input_quantity
                 data['Quantity'] = newQuantity
                 
                 response=requests.post('http://localhost:5000/products', json=database_response)
-                print(response)
                 # Updating the json file:
                 # with open(json_file_path, 'w') as json_file:
                 #     json.dump(database_response, json_file, indent=2)
@@ -91,9 +90,9 @@ async def handle_message(ctx:Context,sender:str, msg: Message):
                     csv_writer.writerows(csv_data)
                 
                 print("New Quantity: ",data['Quantity']) 
-                if data['Quantity'] <5:
+                if data['Quantity'] <120:
                     # print('Low stock after buying')
-                    await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(value=data_name_lower)) # goes to alert agent
+                    await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(product=input_names_with_size[i],quantity=data['Quantity'])) # goes to alert agent
 
 
 
