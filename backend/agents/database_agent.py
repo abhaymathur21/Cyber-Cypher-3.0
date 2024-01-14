@@ -32,11 +32,11 @@ database_agent = Agent(
 @database_agent.on_message(model=Message)
 async def handle_message(ctx:Context,sender:str, msg: Message):
     
-    input_names_with_size = msg.product.split(',')
+    input_names_with_size = msg.product.split(', ')
     input_names = [name.split(' -')[0] for name in input_names_with_size]
-    input_size = [name.split('- ')[1] for name in input_names_with_size]
-    input_quantities = msg.quantity.split(',')
-    print(input_names,input_size,input_quantities)
+    input_sizes = [name.split('- ')[1] for name in input_names_with_size]
+    input_quantities = msg.quantity.split(', ')
+    print(input_names,input_sizes,input_quantities)
     
     for data in database_response:
         # print(data)
@@ -51,7 +51,7 @@ async def handle_message(ctx:Context,sender:str, msg: Message):
             
             input_name_lower=input_names[i].lower()
             input_quantity = int(input_quantities[i])
-            input_size = input_size[i]
+            input_size = input_sizes[i]
             
             if data_name_lower == input_name_lower and data_size == input_size:
                 print(f'{input_quantity} of {input_names[i]}(id:{data_id}) was bought')
