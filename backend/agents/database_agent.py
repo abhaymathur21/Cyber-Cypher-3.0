@@ -9,10 +9,13 @@ json_file_path = r'C:\Users\a21ma\OneDrive\Desktop\Cyber Cypher 3.0\data\product
 csv_file_path = r'C:\Users\a21ma\OneDrive\Desktop\Cyber Cypher 3.0\data\products.csv'
 
 # Reading the data from the json file:
-with open(json_file_path, 'r') as json_file:
-    database_response = json.load(json_file)
+# with open(json_file_path, 'r') as json_file:
+#     database_response = json.load(json_file)
 # print(database_response[0])
     
+response = requests.get('http://localhost:5000/products')
+database_response = response.json()
+
 class Message(Model):
     product: str
     quantity: str
@@ -29,35 +32,43 @@ database_agent = Agent(
 @database_agent.on_message(model=Message)
 async def handle_message(ctx:Context,sender:str, msg: Message):
     
-    input_names = msg.product.split(',')
+    input_names_with_size = msg.product.split(',')
+    input_names = [name.split(' -')[0] for name in input_names_with_size]
+    input_size = [name.split('- ')[1] for name in input_names_with_size]
     input_quantities = msg.quantity.split(',')
+    print(input_names,input_size,input_quantities)
     
     for data in database_response:
         # print(data)
         
         data_name_lower=data['Name'].lower()
-        Quantity = int(data['Quantity'])
+        data_quantity = int(data['Quantity'])
         data_id = data['id']
+        data_size = data['Size']
         
         
         for i in range(len(input_names)):
             
             input_name_lower=input_names[i].lower()
             input_quantity = int(input_quantities[i])
+            input_size = input_size[i]
             
-            if data_name_lower == input_name_lower:
+            if data_name_lower == input_name_lower and data_size == input_size:
                 print(f'{input_quantity} of {input_names[i]}(id:{data_id}) was bought')
                 
-                if Quantity <35:
+                if data_quantity <35:
                     # print('Low stock before buying')
                     await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(value=data_name_lower)) #goes to alert agent
                     
-                newQuantity = Quantity - input_quantity
+                newQuantity = data_quantity - input_quantity
                 data['Quantity'] = newQuantity
                 
+                response=requests.post('http://localhost:5000/products', json=database_response)
+                print(response)
                 # Updating the json file:
-                with open(json_file_path, 'w') as json_file:
-                    json.dump(database_response, json_file, indent=2)
+                # with open(json_file_path, 'w') as json_file:
+                #     json.dump(database_response, json_file, indent=2)
+                
                     
                 # Reading the csv file:
                 with open(csv_file_path, 'r') as csv_file:
@@ -70,7 +81,7 @@ async def handle_message(ctx:Context,sender:str, msg: Message):
                         csv_data_row['Quantity'] = newQuantity
                 
                 with open(csv_file_path, 'w', newline='') as csv_file:
-                    fieldnames = ["id", "Name", "Brand", "Category", "SubCategory", "Price", "Quantity"]
+                    fieldnames = ["id", "Name", "Brand", "Category", "SubCategory", "Price", "Size", "Quantity"]
                     csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
                     # Write the header

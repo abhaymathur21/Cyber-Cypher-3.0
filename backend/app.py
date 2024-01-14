@@ -3,6 +3,7 @@ from uagents.query import query
 from uagents import Model
 from flask_cors import CORS
 import json
+from collections import OrderedDict
 
 class Message(Model):
     product: str
@@ -45,6 +46,22 @@ def product_suggestions():
         if isinstance(product, dict) and 'Name' in product and 'Size' in product and product['Name'].lower().startswith(input_text.lower())
     ]
     return jsonify(filtered_suggestions)
+
+@app.route('/products', methods=['GET','POST'])
+def products():
+    if request.method == 'GET':
+
+        return jsonify(products_data)
+    
+    if request.method == 'POST':
+        data = request.get_json()
+        
+        # Updating the json file:
+        with open(json_file_path, 'w') as json_file:
+            json.dump(data, json_file, indent=2)
+        
+        # print(product, quantity)
+        return jsonify({"message": "Data updated successfully"})
         
 if __name__ == '__main__':
     app.run(debug=True)
