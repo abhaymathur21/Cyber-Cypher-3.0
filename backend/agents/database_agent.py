@@ -4,8 +4,9 @@ from uagents.setup import fund_agent_if_low
 import requests
 import json
 import csv
+import math
 
-json_file_path = r'C:\Users\a21ma\OneDrive\Desktop\Cyber Cypher 3.0\data\products.json'
+json_file_path = r'C:\Users\a21ma\OneDrive\Desktop\Cyber Cypher 3.0\backend\restocking_prediction\predictions.json'
 csv_file_path = r'C:\Users\a21ma\OneDrive\Desktop\Cyber Cypher 3.0\data\products.csv'
 
 # Reading the data from the json file:
@@ -15,6 +16,11 @@ csv_file_path = r'C:\Users\a21ma\OneDrive\Desktop\Cyber Cypher 3.0\data\products
     
 response = requests.get('http://localhost:5000/products')
 database_response = response.json()
+
+with open(json_file_path, 'r') as json_file:
+    stock_predictions = json.load(json_file)
+# print(stock_predictions)
+
 
 class Message(Model):
     product: str
@@ -56,12 +62,18 @@ async def handle_message(ctx:Context,sender:str, msg: Message):
             if data_name_lower == input_name_lower and data_size == input_size:
                 print(f'{input_quantity} of {input_names[i]}(id:{data_id}) was bought')
                 
-                if data_quantity <120:
-                    # print('Low stock before buying')
-                    await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(product=input_names_with_size[i],quantity=data['Quantity'])) #goes to alert agent
+                product_stock = stock_predictions[data_id-1]
+                min_stock = math.ceil(0.25 * product_stock['Month_1']) # month 1 because it is currently january so we are using predictions for this month
+                
+                
+                # if data_quantity < min_stock:
+                #     # print('Low stock before buying')
+                #     await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(product=input_names_with_size[i],quantity=data['Quantity'])) #goes to alert agent
                     
                 newQuantity = data_quantity - input_quantity
                 data['Quantity'] = newQuantity
+                
+                restock_quantity = math.ceil(product_stock['Month_1'] - newQuantity)
                 
                 response=requests.post('http://localhost:5000/products', json=database_response)
                 # Updating the json file:
@@ -90,9 +102,9 @@ async def handle_message(ctx:Context,sender:str, msg: Message):
                     csv_writer.writerows(csv_data)
                 
                 print("New Quantity: ",data['Quantity']) 
-                if data['Quantity'] <120:
+                if data['Quantity'] < min_stock:
                     # print('Low stock after buying')
-                    await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(product=input_names_with_size[i],quantity=data['Quantity'])) # goes to alert agent
+                    await ctx.send("agent1qfhsacmleeygp9qhpnsyjnsmj36el3far8k6vpep5t8uuxupnhus7t40wv8", Message(product=input_names_with_size[i],quantity=restock_quantity)) # goes to alert agent
 
 
 
