@@ -1,20 +1,26 @@
 {
-    "agent1qgkfqeqz87wlwkwnhk6nkueqyzp89y0nvm68rxhnjhzz9fq8v7uvw6r84mx": {
-        "name": "delivery agent B",
-        "status": "IDLE",
-        "in_store": false,
-        "order": ""
-    },
-    "agent1qtru02y2cttmm62wtg038e4yqx7zucxlvu5dggq70zw6f4yp9f3g6nkv5c4": {
-        "name": "delivery agent C",
-        "status": "IDLE",
-        "in_store": false,
-        "order": ""
-    },
-    "agent1q0acwekdgu5ezgpst65duty88t759fsw0nyd3pdlnf6u5fkvhmz7g4zgjkw": {
-        "name": "delivery agent A",
-        "status": "IDLE",
-        "in_store": false,
-        "order": ""
-    }
+    "statuses": [
+        {
+            "name": "delivery agent C",
+            "address": "agent1qtru02y2cttmm62wtg038e4yqx7zucxlvu5dggq70zw6f4yp9f3g6nkv5c4",
+            "status": "IDLE",
+            "in_store": true,
+            "order": ""
+        },
+        {
+            "name": "delivery agent B",
+            "address": "agent1qgkfqeqz87wlwkwnhk6nkueqyzp89y0nvm68rxhnjhzz9fq8v7uvw6r84mx",
+            "status": "IDLE",
+            "in_store": true,
+            "order": ""
+        },
+        {
+            "name": "delivery agent A",
+            "address": "agent1q0acwekdgu5ezgpst65duty88t759fsw0nyd3pdlnf6u5fkvhmz7g4zgjkw",
+            "status": "IDLE",
+            "in_store": true,
+            "order": ""
+        }
+    ],
+    "orders": []
 }
