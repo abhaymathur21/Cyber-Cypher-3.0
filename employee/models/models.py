@@ -27,14 +27,14 @@ class GetStatus(Model):
 
 class CreateOrder(Model):
     product_id: int
-    quatity: int
+    quantity: int
     customer_id: str
 
 
 class Order(Model):
     id: int
     product_id: int
-    quatity: int
+    quantity: int
     customer_id: str
     status: str
     delivery_agent: str

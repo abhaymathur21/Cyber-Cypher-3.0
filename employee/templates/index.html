@@ -7,14 +7,22 @@
     </form>
 </div>
 
-<img
-    src="{{ url_for('static', filename='data-vis/cat-quant.png') }}"
-    alt="Qunatity by Category"
-    width="400" />
-<img
-    src="{{ url_for('static', filename='data-vis/cat-reven.png') }}"
-    alt="Revenue by Category"
-    width="400" />
+<div class="data-vis">
+    <div class="data-chart">
+        <h3>Qunatity by Category</h3>
+        <img
+            src="{{ url_for('static', filename='data-vis/cat-quant.png') }}"
+            alt="Qunatity by Category"
+            width="400" />
+    </div>
+    <div class="data-chart">
+        <h3>Revenue by Category</h3>
+        <img
+            src="{{ url_for('static', filename='data-vis/cat-reven.png') }}"
+            alt="Revenue by Category"
+            width="400" />
+    </div>
+</div>
 
 <h2>Delivery Agents</h2>
 <table>

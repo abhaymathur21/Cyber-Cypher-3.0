@@ -1,4 +1,5 @@
 import json
+import pandas as pd
 
 from agents.manager import manager
 from flask import Flask, render_template, request, redirect
@@ -42,10 +43,18 @@ async def create_order():
     product = request.form["product"]
     quantity = request.form["quantity"]
 
-    res = await query(
+    products = pd.read_json("../data/products.json")
+    products.loc[products["id"] == int(product), "Quantity"] -= int(quantity)
+    products.to_json("../data/products.json", orient="records")
+
+    products = pd.read_csv("../data/products.csv")
+    products.loc[products["id"] == int(product), "Quantity"] -= int(quantity)
+    products.to_csv("../data/products.csv", index=False)
+
+    await query(
         destination=destination,
         message=CreateOrder(
-            product_id=product, quatity=quantity, customer_id=customer_id
+            product_id=product, quantity=quantity, customer_id=customer_id
         ),
     )
 
