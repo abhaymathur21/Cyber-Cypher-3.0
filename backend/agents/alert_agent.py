@@ -18,7 +18,7 @@ print(alert_agent.address)
 
 @alert_agent.on_message(model=Message)
 async def handle_message(ctx:Context,sender:str, msg: Message):
-    ctx.logger.info(f"{msg.product} has low stock")
+    ctx.logger.info(f"{msg.product} is low in stock, restock {msg.quantity} units")
 
 if __name__ == "__main__":
     fund_agent_if_low(alert_agent.wallet.address())
