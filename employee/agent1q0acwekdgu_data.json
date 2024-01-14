@@ -1,6 +1,7 @@
 {
     "name": "delivery agent A",
+    "address": "agent1q0acwekdgu5ezgpst65duty88t759fsw0nyd3pdlnf6u5fkvhmz7g4zgjkw",
     "status": "IDLE",
     "order": "",
-    "in_store": false
+    "in_store": true
 }

@@ -1,31 +1,13 @@
 {% extends "base.html" %} {% block content %}
-<h1>Dashboard</h1>
+<h1>Orders</h1>
 
-<h2>Delivery Agents</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Order</th>
-            <th>In Store</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if statuses | length == 0 %}
-        <tr>
-            <td colspan="4">No data</td>
-        </tr>
-        {% endif %} {% for item in statuses %}
-        <tr>
-            <td>{{ item.name | upper }}</td>
-            <td>{{ item.order if item.order else '---' }}</td>
-            <td>{{ item.in_store }}</td>
-            <td class="{{ item.status | lower }} status">{{ item.status }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<h2>New Order</h2>
+<form action="/orders" method="POST">
+    <label for="customer_id">Customer ID</label>
+    <input type="text" name="customer_id" id="customer_id" />
+    <label for="delivery_agent">Delivery Agent</label>
+    <input type="submit" value="Submit" />
+</form>
 
 <h2>Orders</h2>
 <table>

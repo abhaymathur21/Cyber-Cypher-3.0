@@ -10,6 +10,23 @@
     </head>
 
     <body>
-        {% block content %}{% endblock %}
+        <header>
+            <h1>Grocery</h1>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="/">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="/inventory">Inventory</a>
+                    </li>
+                    <li>
+                        <a href="/orders">Orders</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>{% block content %}{% endblock %}</main>
     </body>
 </html>
