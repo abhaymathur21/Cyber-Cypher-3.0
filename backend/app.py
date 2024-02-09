@@ -13,7 +13,7 @@ class Message(Model):
 app = Flask(__name__)
 CORS(app)
 
-json_file_path = r'C:\Users\a21ma\OneDrive\Desktop\Cyber Cypher 3.0\data\products.json'
+json_file_path = r'C:\Users\a21ma\OneDrive\Desktop\Code\Projects\Cyber Cypher 3.0\data\products.json'
 
 # Reading the data from the json file:
 with open(json_file_path, 'r') as json_file:
